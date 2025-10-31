@@ -9,7 +9,7 @@
 [![Facebook](https://img.shields.io/badge/Facebook-SafarPath-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://www.facebook.com/SafarPath)
 [![ORCID](https://img.shields.io/badge/ORCID-0009--0000--8992--7440-A6CE39?style=for-the-badge&logo=orcid&logoColor=white)](https://orcid.org/0009-0000-8992-7440)
 
-![SafarPath Banner](https://via.placeholder.com/1200x400/3D2C8D/FFFFFF?text=SafarPath+-+Digital+Journey+Companion)
+
 
 ## 🧭 About SafarPath
 
