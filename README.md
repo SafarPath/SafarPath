@@ -39,7 +39,6 @@ At SafarPath, we believe every website, every project, and every idea represents
 # Contact us for your digital journey
 📞 WhatsApp: +92 312 7592672
 🌐 Website: https://safarpath.qzz.io
-📧 Email: hello@safarpath.com
 ```
 
 ### Our Development Process
