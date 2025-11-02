@@ -1,0 +1,550 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Pages Portfolio - SafarPath</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'royal-purple': '#6C4AB6',
+                        'deep-indigo': '#3D2C8D',
+                        'neon-violet': '#8A2BE2',
+                    },
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                        'inter': ['Inter', 'sans-serif'],
+                        'space-grotesk': ['Space Grotesk', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+                        'neon': '0 0 10px rgba(138, 43, 226, 0.5), 0 0 20px rgba(138, 43, 226, 0.3)',
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom CSS for 3D effects and glassmorphism */
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        .glass-dark {
+            background: rgba(61, 44, 141, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(108, 74, 182, 0.3);
+        }
+        
+        .gradient-border {
+            position: relative;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(45deg, #6C4AB6, #3D2C8D) border-box;
+            border: 2px solid transparent;
+        }
+        
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(108, 74, 182, 0.3);
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) translateX(500px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+        
+        .tilt-card:hover {
+            transform: rotateY(5deg) rotateX(5deg) translateY(-10px);
+            box-shadow: 0 15px 30px rgba(108, 74, 182, 0.3);
+        }
+        
+        .glow-on-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .glow-on-hover:hover {
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.7);
+        }
+        
+        .landing-page-preview {
+            height: 200px;
+            background-size: cover;
+            background-position: top;
+            border-radius: 12px 12px 0 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .landing-page-preview::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(transparent, rgba(108, 74, 182, 0.1));
+        }
+        
+        .filter-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn.active {
+            background: linear-gradient(135deg, #6C4AB6, #3D2C8D);
+            color: white;
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, #6C4AB6, #3D2C8D);
+            color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-white to-gray-100 text-gray-800">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="index.html" class="text-2xl font-bold font-space-grotesk bg-gradient-to-r from-deep-indigo to-royal-purple bg-clip-text text-transparent">SafarPath</a>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="font-medium hover:text-royal-purple transition-colors">Home</a>
+                <a href="portfolio.html" class="font-medium text-royal-purple transition-colors">Portfolio</a>
+                <a href="index.html#about" class="font-medium hover:text-royal-purple transition-colors">About</a>
+                <a href="index.html#technologies" class="font-medium hover:text-royal-purple transition-colors">Technologies</a>
+                <a href="index.html#testimonials" class="font-medium hover:text-royal-purple transition-colors">Testimonials</a>
+                <a href="index.html#contact" class="font-medium hover:text-royal-purple transition-colors">Contact</a>
+            </div>
+            <button class="md:hidden text-royal-purple">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 relative overflow-hidden">
+        <div class="particles" id="particles-container"></div>
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-5xl md:text-6xl font-bold font-space-grotesk mb-6" data-aos="fade-up">Landing Pages <span class="bg-gradient-to-r from-deep-indigo to-royal-purple bg-clip-text text-transparent">Portfolio</span></h1>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-10" data-aos="fade-up" data-aos-delay="100">Showcasing high-converting landing pages designed to drive results across various industries and business objectives.</p>
+            
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-12">
+                <div class="stats-card" data-aos="fade-up" data-aos-delay="150">
+                    <div class="text-3xl font-bold">127+</div>
+                    <div class="text-purple-200">Landing Pages</div>
+                </div>
+                <div class="stats-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-3xl font-bold">42%</div>
+                    <div class="text-purple-200">Avg. Conversion</div>
+                </div>
+                <div class="stats-card" data-aos="fade-up" data-aos-delay="250">
+                    <div class="text-3xl font-bold">3.2s</div>
+                    <div class="text-purple-200">Avg. Load Time</div>
+                </div>
+                <div class="stats-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="text-3xl font-bold">98%</div>
+                    <div class="text-purple-200">Client Satisfaction</div>
+                </div>
+            </div>
+            
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12" data-aos="fade-up" data-aos-delay="350">
+                <button class="filter-btn active px-5 py-2 rounded-full glass border border-royal-purple" data-filter="all">All Landing Pages</button>
+                <button class="filter-btn px-5 py-2 rounded-full glass border border-gray-300" data-filter="saas">SaaS</button>
+                <button class="filter-btn px-5 py-2 rounded-full glass border border-gray-300" data-filter="ecommerce">E-Commerce</button>
+                <button class="filter-btn px-5 py-2 rounded-full glass border border-gray-300" data-filter="agency">Agency</button>
+                <button class="filter-btn px-5 py-2 rounded-full glass border border-gray-300" data-filter="product">Product</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Grid -->
+    <section class="py-10 pb-20">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="portfolio-grid">
+                
+                <!-- SaaS Landing Page -->
+                <div class="portfolio-card tilt-card rounded-2xl overflow-hidden glass gradient-border" data-aos="zoom-in" data-category="saas">
+                    <div class="landing-page-preview" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-white text-center p-6">
+                                <i class="fas fa-cloud text-5xl mb-4"></i>
+                                <h3 class="text-xl font-bold">CloudFlow SaaS</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold font-space-grotesk mb-2">CloudFlow SaaS Platform</h3>
+                        <p class="text-gray-600 mb-4">High-converting SaaS landing page with feature highlights, pricing tiers, and customer testimonials.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-purple-100 text-royal-purple px-3 py-1 rounded-full text-sm">Lead Generation</span>
+                            <span class="bg-purple-100 text-royal-purple px-3 py-1 rounded-full text-sm">Pricing Tables</span>
+                            <span class="bg-purple-100 text-royal-purple px-3 py-1 rounded-full text-sm">Testimonials</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Conversion: <strong class="text-green-600">38%</strong></span>
+                            <button class="text-royal-purple font-medium flex items-center glow-on-hover">
+                                View Details <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- E-commerce Landing Page -->
+                <div class="portfolio-card tilt-card rounded-2xl overflow-hidden glass gradient-border" data-aos="zoom-in" data-aos-delay="100" data-category="ecommerce">
+                    <div class="landing-page-preview" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-white text-center p-6">
+                                <i class="fas fa-shopping-bag text-5xl mb-4"></i>
+                                <h3 class="text-xl font-bold">StyleCart</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold font-space-grotesk mb-2">StyleCart Fashion Store</h3>
+                        <p class="text-gray-600 mb-4">Product-focused landing page with hero product showcase, limited-time offers, and trust signals.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-purple-100 text-royal-purple px-3 py-1 rounded-full text-sm">Product Focus</span>
+                            <span class="bg-purple-100 text-royal-purple px-3 py-1 rounded-full text-sm">Limited Offers</span>
+                            <span class="bg-purple-100 text-royal-purple px-3 py-1 rounded-full text-sm">Trust Badges</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Conversion: <strong class="text-green-600">45%</strong></span>
+                            <button class="text-royal-purple font-medium flex items-center glow-on-hover">
+                                View Details <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Agency Landing Page -->
+                <div class="portfolio-card tilt-card rounded-2xl overflow-hidden glass gradient-border" data-aos="zoom-in" data-aos-delay="200" data-category="agency">
+                    <div class="landing-page-preview" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-white text-center p-6">
+                                <i class="fas fa-paint-brush text-5xl mb-4"></i>
+                                <h3 class="text-xl font-bold">CreativeMinds</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold font-space-grotesk mb-2">CreativeMinds Agency</h3>
+                        <p class="text-gray-600 mb-4">Service-based landing page with portfolio showcase, client logos, and clear call-to-action sections.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-purple-100 text-royal-purple px-3 py-1 rounded-full text-sm">Portfolio Showcase</span>
+                            <span class="bg-purple-100 text-royal-purple px-3 py-1 rounded-full text-sm">Client Logos</span>
+                            <span class="bg-purple-100 text-royal-purple px-3 py-1 rounded-full text-sm">Service Highlights</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Conversion: <strong class="text-green-600">52%</strong></span>
+                            <button class="text-royal-purple font-medium flex items-center glow-on-hover">
+                                View Details <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Landing Page -->
+                <div class="portfolio-card tilt-card rounded-2xl overflow-hidden glass gradient-border" data-aos="zoom-in" data-category="product">
+                    <div class="landing-page-preview" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-white text-center p-6">
+                                <i class="fas fa-mobile-alt text-5xl mb-4"></i>
+                                <h3 class="text-xl font-bold">SmartDevice Pro</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold font-space-grotesk mb-2">SmartDevice Pro Launch</h3>
+                        <p class="text-gray-600 mb-4">Product launch landing page with feature highlights, pre-order options, and countdown timer.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-purple-100 text-royal-purple px-3 py-1 rounded-full text-sm">Product Launch</span>
+                            <span class="bg-purple-100 text-royal-purple px-3 py-1 rounded-full text-sm">Pre-order</span>
+                            <span class="bg-purple-100 text-royal-purple px-3 py-1 rounded-full text-sm">Countdown Timer</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Conversion: <strong class="text-green-600">61%</strong></span>
+                            <button class="text-royal-purple font-medium flex items-center glow-on-hover">
+                                View Details <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Education Landing Page -->
+                <div class="portfolio-card tilt-card rounded-2xl overflow-hidden glass gradient-border" data-aos="zoom-in" data-aos-delay="100" data-category="saas">
+                    <div class="landing-page-preview" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-white text-center p-6">
+                                <i class="fas fa-graduation-cap text-5xl mb-4"></i>
+                                <h3 class="text-xl font-bold">LearnHub</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold font-space-grotesk mb-2">LearnHub Online Courses</h3>
+                        <p class="text-gray-600 mb-4">Educational platform landing page with course previews, instructor profiles, and enrollment CTAs.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-purple-100 text-royal-purple px-3 py-1 rounded-full text-sm">Course Previews</span>
+                            <span class="bg-purple-100 text-royal-purple px-3 py-1 rounded-full text-sm">Instructor Profiles</span>
+                            <span class="bg-purple-100 text-royal-purple px-3 py-1 rounded-full text-sm">Enrollment CTA</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Conversion: <strong class="text-green-600">47%</strong></span>
+                            <button class="text-royal-purple font-medium flex items-center glow-on-hover">
+                                View Details <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Real Estate Landing Page -->
+                <div class="portfolio-card tilt-card rounded-2xl overflow-hidden glass gradient-border" data-aos="zoom-in" data-aos-delay="200" data-category="agency">
+                    <div class="landing-page-preview" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-gray-800 text-center p-6">
+                                <i class="fas fa-home text-5xl mb-4"></i>
+                                <h3 class="text-xl font-bold">EliteProperties</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold font-space-grotesk mb-2">EliteProperties Real Estate</h3>
+                        <p class="text-gray-600 mb-4">Real estate landing page with property showcases, location highlights, and lead capture forms.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-purple-100 text-royal-purple px-3 py-1 rounded-full text-sm">Property Showcase</span>
+                            <span class="bg-purple-100 text-royal-purple px-3 py-1 rounded-full text-sm">Location Map</span>
+                            <span class="bg-purple-100 text-royal-purple px-3 py-1 rounded-full text-sm">Lead Capture</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Conversion: <strong class="text-green-600">39%</strong></span>
+                            <button class="text-royal-purple font-medium flex items-center glow-on-hover">
+                                View Details <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="py-20 bg-gradient-to-b from-white to-gray-100">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold font-space-grotesk text-center mb-4" data-aos="fade-up">Our Landing Page Process</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-16" data-aos="fade-up">A systematic approach to creating high-converting landing pages</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
+                <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-r from-deep-indigo to-royal-purple flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">1</div>
+                    <h3 class="font-bold text-lg mb-2">Discovery & Strategy</h3>
+                    <p class="text-gray-600">Understanding your goals, audience, and conversion objectives</p>
+                </div>
+                <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-r from-deep-indigo to-royal-purple flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">2</div>
+                    <h3 class="font-bold text-lg mb-2">Wireframing & Design</h3>
+                    <p class="text-gray-600">Creating visual layouts focused on user flow and conversion paths</p>
+                </div>
+                <div class="text-center" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-r from-deep-indigo to-royal-purple flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">3</div>
+                    <h3 class="font-bold text-lg mb-2">Development & Optimization</h3>
+                    <p class="text-gray-600">Building with performance, SEO, and conversion best practices</p>
+                </div>
+                <div class="text-center" data-aos="fade-up" data-aos-delay="400">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-r from-deep-indigo to-royal-purple flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">4</div>
+                    <h3 class="font-bold text-lg mb-2">Testing & Launch</h3>
+                    <p class="text-gray-600">Rigorous testing across devices and A/B testing for optimization</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-r from-deep-indigo to-royal-purple text-white">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-4xl font-bold font-space-grotesk mb-6" data-aos="fade-up">Ready to Boost Your Conversions?</h2>
+            <p class="text-xl max-w-2xl mx-auto mb-10" data-aos="fade-up" data-aos-delay="100">Let's create a high-converting landing page that drives results for your business.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4" data-aos="fade-up" data-aos-delay="200">
+                <a href="index.html#contact" class="bg-white text-royal-purple px-8 py-3 rounded-lg font-medium shadow-neon glow-on-hover">Get A Quote</a>
+                <a href="index.html#portfolio" class="glass border border-white px-8 py-3 rounded-lg font-medium glow-on-hover">View More Work</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-r from-deep-indigo to-royal-purple text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <h2 class="text-2xl font-bold font-space-grotesk">SafarPath</h2>
+                    <p class="mt-2 text-purple-200">Guiding Your Digital Journey</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="index.html" class="hover:text-purple-300 transition-colors">Home</a>
+                    <a href="portfolio.html" class="hover:text-purple-300 transition-colors">Portfolio</a>
+                    <a href="index.html#about" class="hover:text-purple-300 transition-colors">About</a>
+                    <a href="index.html#contact" class="hover:text-purple-300 transition-colors">Contact</a>
+                </div>
+            </div>
+            <div class="border-t border-purple-400 mt-8 pt-8 text-center text-purple-200">
+                <p>&copy; 2023 SafarPath. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+        
+        // Create floating particles
+        function createParticles(containerId, count) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size between 5px and 20px
+                const size = Math.random() * 15 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation delay
+                particle.style.animationDelay = `${Math.random() * 15}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Initialize particles
+        createParticles('particles-container', 15);
+        
+        // Portfolio filtering functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const portfolioCards = document.querySelectorAll('.portfolio-card');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Update active button
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('active', 'text-white');
+                    btn.classList.add('border-gray-300');
+                });
+                
+                button.classList.add('active', 'text-white');
+                button.classList.remove('border-gray-300');
+                
+                // Filter cards
+                const filterValue = button.getAttribute('data-filter');
+                
+                portfolioCards.forEach(card => {
+                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                        card.style.display = 'block';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'scale(1)';
+                        }, 10);
+                    } else {
+                        card.style.opacity = '0';
+                        card.style.transform = 'scale(0.8)';
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
