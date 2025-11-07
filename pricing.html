@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing - SafarPath</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'royal-purple': '#6C4AB6',
+                        'deep-indigo': '#3D2C8D',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #6C4AB6, #8A2BE2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .language-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+        .language-popup.active {
+            display: block;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        .pricing-card {
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-list li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            color: #10B981;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .currency-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin-left: 8px;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* RTL Support */
+        [dir="rtl"] .feature-list li::before {
+            margin-right: 0;
+            margin-left: 0.5rem;
+        }
+
+        [dir="rtl"] .currency-badge {
+            margin-left: 0;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-white">
+    <!-- Language Popup -->
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="language-popup glass rounded-2xl p-8 max-w-md w-full" id="languagePopup">
+        <div class="text-center">
+            <h3 class="text-2xl font-bold mb-6" id="popupTitle">Choose Language / اختر اللغة</h3>
+            <div class="space-y-4">
+                <button onclick="setLanguage('en')" class="w-full glass-card py-4 rounded-xl hover:bg-white/20 transition-all duration-300 flex items-center justify-center space-x-3">
+                    <i class="fas fa-globe-americas"></i>
+                    <span class="font-semibold">English</span>
+                </button>
+                <button onclick="setLanguage('ar')" class="w-full glass-card py-4 rounded-xl hover:bg-white/20 transition-all duration-300 flex items-center justify-center space-x-3">
+                    <i class="fas fa-globe-asia"></i>
+                    <span class="font-semibold">العربية</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-royal-purple to-deep-indigo flex items-center justify-center text-white">
+                    <i class="fas fa-rocket text-sm"></i>
+                </div>
+                <a href="index.html" class="text-2xl font-bold gradient-text">SafarPath</a>
+            </div>
+            <div class="flex items-center space-x-6">
+                <a href="index.html" class="text-white hover:text-gray-300 transition-colors">
+                    <i class="fas fa-home mr-2"></i><span id="navHome">Home</span>
+                </a>
+                <button onclick="openLanguagePopup()" class="text-white hover:text-gray-300 transition-colors flex items-center space-x-2">
+                    <i class="fas fa-language"></i>
+                    <span id="navLanguage">Language</span>
+                    <span class="currency-badge" id="currencyIndicator">Loading...</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6" id="heroTitle">
+                Our <span class="gradient-text">Pricing</span>
+            </h1>
+            <p class="text-xl text-gray-200 max-w-2xl mx-auto mb-8" id="heroSubtitle">
+                Transparent pricing for all your web development needs. Quality service at competitive rates.
+            </p>
+            <div class="glass-card rounded-xl p-4 inline-block">
+                <p class="text-sm" id="currencyNote">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    <span>Prices shown in your local currency</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="py-10 pb-20">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                
+                <!-- Bug Fixing Plan -->
+                <div class="pricing-card glass-card rounded-3xl p-8">
+                    <div class="text-center mb-8">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-red-500 to-pink-600 flex items-center justify-center text-white text-2xl mx-auto mb-4">
+                            <i class="fas fa-bug"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2" id="plan1Title">Bug Fixing</h3>
+                        <p class="text-gray-300 mb-4" id="plan1Subtitle">Quick error resolution</p>
+                        <div class="flex items-center justify-center mb-2">
+                            <div class="text-3xl font-bold gradient-text" id="plan1Price">5,000 PKR</div>
+                            <div class="currency-badge" id="plan1Currency">PKR</div>
+                        </div>
+                        <p class="text-gray-400 text-sm" id="plan1Starting">Starting price</p>
+                    </div>
+                    
+                    <ul class="feature-list text-left mb-8">
+                        <li id="feature1_1">Quick error diagnosis</li>
+                        <li id="feature1_2">Code debugging</li>
+                        <li id="feature1_3">Performance optimization</li>
+                        <li id="feature1_4">24/7 support availability</li>
+                        <li id="feature1_5">Security patch implementation</li>
+                    </ul>
+                    
+                    <button onclick="contactWhatsApp('Bug Fixing - 5,000 PKR')" class="w-full bg-gradient-to-r from-red-500 to-pink-600 text-white py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity">
+                        <i class="fab fa-whatsapp mr-2"></i>
+                        <span id="ctaBug">Contact for Bug Fixing</span>
+                    </button>
+                </div>
+
+                <!-- Website Development Plan -->
+                <div class="pricing-card glass-card rounded-3xl p-8 transform scale-105 relative">
+                    <div class="absolute top-4 right-4">
+                        <span class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-3 py-1 rounded-full text-sm font-semibold" id="popularBadge">
+                            Most Popular
+                        </span>
+                    </div>
+                    <div class="text-center mb-8">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center text-white text-2xl mx-auto mb-4">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2" id="plan2Title">Website Development</h3>
+                        <p class="text-gray-300 mb-4" id="plan2Subtitle">Complete web solutions</p>
+                        <div class="flex items-center justify-center mb-2">
+                            <div class="text-3xl font-bold gradient-text" id="plan2Price">80,000 PKR</div>
+                            <div class="currency-badge" id="plan2Currency">PKR</div>
+                        </div>
+                        <p class="text-gray-400 text-sm" id="plan2Starting">Starting price</p>
+                    </div>
+                    
+                    <ul class="feature-list text-left mb-8">
+                        <li id="feature2_1">Custom website design</li>
+                        <li id="feature2_2">Responsive development</li>
+                        <li id="feature2_3">SEO optimization</li>
+                        <li id="feature2_4">Content management system</li>
+                        <li id="feature2_5">1 year free maintenance</li>
+                        <li id="feature2_6">Domain & hosting setup</li>
+                    </ul>
+                    
+                    <button onclick="contactWhatsApp('Website Development - 80,000 PKR')" class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity">
+                        <i class="fab fa-whatsapp mr-2"></i>
+                        <span id="ctaDev">Start Development</span>
+                    </button>
+                </div>
+
+                <!-- Premium Support Plan -->
+                <div class="pricing-card glass-card rounded-3xl p-8">
+                    <div class="text-center mb-8">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-2xl mx-auto mb-4">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2" id="plan3Title">Website Maintenance</h3>
+                        <p class="text-gray-300 mb-4" id="plan3Subtitle">Ongoing support & updates</p>
+                        <div class="flex items-center justify-center mb-2">
+                            <div class="text-3xl font-bold gradient-text" id="plan3Price">10,000 PKR</div>
+                            <div class="currency-badge" id="plan3Currency">PKR</div>
+                        </div>
+                        <p class="text-gray-400 text-sm" id="plan3Starting">Starting price</p>
+                    </div>
+                    
+                    <ul class="feature-list text-left mb-8">
+                        <li id="feature3_1">Regular updates</li>
+                        <li id="feature3_2">Security monitoring</li>
+                        <li id="feature3_3">Backup services</li>
+                        <li id="feature3_4">Performance checks</li>
+                        <li id="feature3_5">Emergency support</li>
+                    </ul>
+                    
+                    <button onclick="contactWhatsApp('Website Maintenance - 10,000 PKR')" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity">
+                        <i class="fab fa-whatsapp mr-2"></i>
+                        <span id="ctaSupport">Get Maintenance</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-6 text-center">
+            <div class="glass-card rounded-3xl p-12 max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold mb-6" id="contactTitle">Ready to Get Started?</h2>
+                <p class="text-xl text-gray-200 mb-8" id="contactSubtitle">
+                    Contact us directly on WhatsApp for quick responses and personalized quotes.
+                </p>
+                <button onclick="contactWhatsApp('General Inquiry')" class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:opacity-90 transition-opacity">
+                    <i class="fab fa-whatsapp mr-3"></i>
+                    <span id="contactCta">Chat on WhatsApp +92 312 7592672</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Base prices in PKR
+        const basePrices = {
+            bugFixing: 5000,
+            websiteDevelopment: 80000,
+            websiteMaintenance: 10000
+        };
+
+        // Language and country mapping
+        const countryLanguageMap = {
+            'SA': 'ar', // Saudi Arabia
+            'AE': 'ar', // UAE
+            'EG': 'ar', // Egypt
+            'KW': 'ar', // Kuwait
+            'QA': 'ar', // Qatar
+            'BH': 'ar', // Bahrain
+            'OM': 'ar', // Oman
+            'JO': 'ar', // Jordan
+            'LB': 'ar', // Lebanon
+            'SY': 'ar', // Syria
+            'IQ': 'ar', // Iraq
+            'PS': 'ar', // Palestine
+            'DZ': 'ar', // Algeria
+            'MA': 'ar', // Morocco
+            'TN': 'ar', // Tunisia
+            'LY': 'ar', // Libya
+            'SD': 'ar', // Sudan
+            'YE': 'ar'  // Yemen
+        };
+
+        // Currency symbols
+        const currencySymbols = {
+            'USD': '$',
+            'EUR': '€',
+            'GBP': '£',
+            'PKR': '₨',
+            'SAR': '﷼',
+            'AED': 'د.إ',
+            'INR': '₹',
+            'CAD': 'C$',
+            'AUD': 'A$'
+        };
+
+        // Language content
+        const content = {
+            en: {
+                navHome: "Home",
+                navLanguage: "Language",
+                popupTitle: "Choose Language",
+                heroTitle: "Our Pricing",
+                heroSubtitle: "Transparent pricing for all your web development needs. Quality service at competitive rates.",
+                currencyNote: "Prices shown in your local currency",
+                
+                plan1Title: "Bug Fixing",
+                plan1Subtitle: "Quick error resolution",
+                plan1Starting: "Starting price",
+                feature1_1: "Quick error diagnosis",
+                feature1_2: "Code debugging",
+                feature1_3: "Performance optimization",
+                feature1_4: "24/7 support availability",
+                feature1_5: "Security patch implementation",
+                ctaBug: "Contact for Bug Fixing",
+                
+                plan2Title: "Website Development",
+                plan2Subtitle: "Complete web solutions",
+                plan2Starting: "Starting price",
+                feature2_1: "Custom website design",
+                feature2_2: "Responsive development",
+                feature2_3: "SEO optimization",
+                feature2_4: "Content management system",
+                feature2_5: "1 year free maintenance",
+                feature2_6: "Domain & hosting setup",
+                ctaDev: "Start Development",
+                popularBadge: "Most Popular",
+                
+                plan3Title: "Website Maintenance",
+                plan3Subtitle: "Ongoing support & updates",
+                plan3Starting: "Starting price",
+                feature3_1: "Regular updates",
+                feature3_2: "Security monitoring",
+                feature3_3: "Backup services",
+                feature3_4: "Performance checks",
+                feature3_5: "Emergency support",
+                ctaSupport: "Get Maintenance",
+                
+                contactTitle: "Ready to Get Started?",
+                contactSubtitle: "Contact us directly on WhatsApp for quick responses and personalized quotes.",
+                contactCta: "Chat on WhatsApp +92 312 7592672"
+            },
+            ar: {
+                navHome: "الرئيسية",
+                navLanguage: "اللغة",
+                popupTitle: "اختر اللغة",
+                heroTitle: "أسعارنا",
+                heroSubtitle: "أسعار شفافة لجميع احتياجات تطوير الويب الخاصة بك. خدمة عالية الجودة بأسعار تنافسية.",
+                currencyNote: "الأسعار معروضة بعملتك المحلية",
+                
+                plan1Title: "إصلاح الأخطاء",
+                plan1Subtitle: "حل سريع للأخطاء",
+                plan1Starting: "السعر يبدأ من",
+                feature1_1: "تشخيص سريع للأخطاء",
+                feature1_2: "تصحيح الأخطاء البرمجية",
+                feature1_3: "تحسين الأداء",
+                feature1_4: "دعم متاح 24/7",
+                feature1_5: "تنفيذ تصحيحات الأمان",
+                ctaBug: "اتصل لإصلاح الأخطاء",
+                
+                plan2Title: "تطوير المواقع",
+                plan2Subtitle: "حلول ويب متكاملة",
+                plan2Starting: "السعر يبدأ من",
+                feature2_1: "تصميم موقع مخصص",
+                feature2_2: "تطوير متجاوب",
+                feature2_3: "تحسين محركات البحث",
+                feature2_4: "نظام إدارة المحتوى",
+                feature2_5: "صيانة مجانية لمدة سنة",
+                feature2_6: "إعداد النطاق والاستضافة",
+                ctaDev: "ابدأ التطوير",
+                popularBadge: "الأكثر شيوعاً",
+                
+                plan3Title: "صيانة الموقع",
+                plan3Subtitle: "دعم وتحديثات مستمرة",
+                plan3Starting: "السعر يبدأ من",
+                feature3_1: "تحديثات منتظمة",
+                feature3_2: "مراقبة الأمان",
+                feature3_3: "خدمات النسخ الاحتياطي",
+                feature3_4: "فحوصات الأداء",
+                feature3_5: "دعم طوارئ",
+                ctaSupport: "احصل على الصيانة",
+                
+                contactTitle: "مستعد للبدء؟",
+                contactSubtitle: "اتصل بنا مباشرة على الواتساب للحصول على ردود سريعة وعروض أسعار مخصصة.",
+                contactCta: "تواصل على الواتساب +92 312 7592672"
+            }
+        };
+
+        // Current settings
+        let currentLang = 'en';
+        let currentCurrency = 'PKR';
+        let exchangeRate = 1;
+
+        // Detect user's country and set language/currency
+        async function detectUserLocation() {
+            try {
+                // Show loading state
+                document.getElementById('currencyIndicator').innerHTML = '<div class="loading-spinner"></div>';
+
+                // Get user's IP and location
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                
+                const countryCode = data.country_code;
+                const currency = data.currency || 'PKR';
+                
+                // Auto-set language based on country
+                if (countryLanguageMap[countryCode]) {
+                    currentLang = countryLanguageMap[countryCode];
+                } else {
+                    // Default to browser language
+                    const browserLang = navigator.language.split('-')[0];
+                    currentLang = (browserLang === 'ar') ? 'ar' : 'en';
+                }
+                
+                // Get exchange rate
+                await getExchangeRate(currency);
+                currentCurrency = currency;
+                
+                // Update UI
+                updateContent();
+                updatePrices();
+                updateCurrencyIndicator();
+                
+            } catch (error) {
+                console.error('Location detection failed:', error);
+                // Fallback to default
+                currentLang = 'en';
+                currentCurrency = 'PKR';
+                exchangeRate = 1;
+                updateContent();
+                updatePrices();
+                updateCurrencyIndicator();
+            }
+        }
+
+        // Get exchange rate from PKR to target currency
+        async function getExchangeRate(targetCurrency) {
+            if (targetCurrency === 'PKR') {
+                exchangeRate = 1;
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://api.exchangerate-api.com/v4/latest/PKR`);
+                const data = await response.json();
+                exchangeRate = data.rates[targetCurrency] || 1;
+            } catch (error) {
+                console.error('Exchange rate fetch failed:', error);
+                exchangeRate = 1;
+            }
+        }
+
+        // Update prices based on exchange rate
+        function updatePrices() {
+            const formatPrice = (price) => {
+                const convertedPrice = price * exchangeRate;
+                if (convertedPrice >= 1000) {
+                    return Math.round(convertedPrice).toLocaleString();
+                } else {
+                    return convertedPrice.toFixed(2);
+                }
+            };
+
+            const symbol = currencySymbols[currentCurrency] || currentCurrency;
+
+            document.getElementById('plan1Price').textContent = `${formatPrice(basePrices.bugFixing)}`;
+            document.getElementById('plan1Currency').textContent = currentCurrency;
+
+            document.getElementById('plan2Price').textContent = `${formatPrice(basePrices.websiteDevelopment)}`;
+            document.getElementById('plan2Currency').textContent = currentCurrency;
+
+            document.getElementById('plan3Price').textContent = `${formatPrice(basePrices.websiteMaintenance)}`;
+            document.getElementById('plan3Currency').textContent = currentCurrency;
+        }
+
+        // Update currency indicator
+        function updateCurrencyIndicator() {
+            const symbol = currencySymbols[currentCurrency] || currentCurrency;
+            document.getElementById('currencyIndicator').textContent = `${symbol} ${currentCurrency}`;
+        }
+
+        // Open language popup
+        function openLanguagePopup() {
+            document.getElementById('languagePopup').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+
+        // Set language manually
+        function setLanguage(lang) {
+            currentLang = lang;
+            updateContent();
+            closeLanguagePopup();
+            
+            // Update HTML direction for RTL
+            if (lang === 'ar') {
+                document.documentElement.dir = 'rtl';
+            } else {
+                document.documentElement.dir = 'ltr';
+            }
+        }
+
+        // Close language popup
+        function closeLanguagePopup() {
+            document.getElementById('languagePopup').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+
+        // Update all content based on current language
+        function updateContent() {
+            const langContent = content[currentLang];
+            
+            Object.keys(langContent).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = langContent[key];
+                }
+            });
+        }
+
+        // WhatsApp contact function
+        function contactWhatsApp(service) {
+            const message = `Hello! I'm interested in: ${service}`;
+            const encodedMessage = encodeURIComponent(message);
+            const phone = '+923127592672';
+            window.open(`https://wa.me/${phone}?text=${encodedMessage}`, '_blank');
+        }
+
+        // Close popup when clicking overlay
+        document.getElementById('overlay').addEventListener('click', closeLanguagePopup);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            detectUserLocation();
+        });
+    </script>
+</body>
+</html>
