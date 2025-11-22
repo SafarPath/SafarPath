@@ -1,6 +1,6 @@
       
 # 🌐 SafarPath - Digital Development & Innovation Studio   
- 
+  
 > *Guiding your digital journey with clarity, creativity, and confidence*   
   
 [![Website](https://img.shields.io/badge/Website-safarpath.qzz.io-6C4AB6?style=for-the-badge&logo=google-chrome&logoColor=white)](https://safarpath.qzz.io/)
